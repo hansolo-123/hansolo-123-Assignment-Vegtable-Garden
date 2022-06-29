@@ -24,8 +24,19 @@ const getRevenueForCrop = (corn) => {
 };
 
 const getProfitForCrop = (amount, corn) => {
-  console.log(amount.crop.cost);
   return getRevenueForCrop(corn) - getCostsForCrop(amount);
+};
+
+const getTotalProfit = ({ crops }) => {
+  let cost = [];
+  let revenue = [];
+  for (let i of crops) {
+    cost.push(i.numCrops * i.crop.cost);
+    revenue.push(i.crop.yield * i.crop.price);
+  }
+  const totalCost = cost.reduce((total, arg) => total + arg, 0);
+  const totalRevenue = revenue.reduce((total, arg) => total + arg, 0);
+  return totalRevenue - totalCost;
 };
 
 module.exports = {
@@ -35,4 +46,5 @@ module.exports = {
   getCostsForCrop,
   getRevenueForCrop,
   getProfitForCrop,
+  getTotalProfit,
 };
