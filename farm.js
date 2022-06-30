@@ -10,8 +10,16 @@ const getYieldForPlant = (corn, environmentFactors) => {
   }
 };
 
-const getYieldForCrop = (input) => {
-  return input.numCrops * input.crop.yield;
+const getYieldForCrop = (input, environmentFactors) => {
+  if (environmentFactors == undefined) {
+    return input.numCrops * input.crop.yield;
+  } else {
+    let sunValue = environmentFactors.sun;
+    let windValue = environmentFactors.wind;
+    let sunAmount = input.crop.factor.sun[sunValue];
+    let windAmount = input.crop.factor.wind[windValue];
+    return input.numCrops * input.crop.yield * sunAmount * windAmount;
+  }
 };
 
 const getTotalYield = ({ crops }) => {
