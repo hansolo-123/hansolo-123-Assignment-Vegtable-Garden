@@ -57,7 +57,8 @@ const getProfitForCrop = (amount, corn, environmentFactors) => {
   return getRevenueForCrop(corn, environmentFactors) - getCostsForCrop(amount);
 };
 
-const getTotalProfit = ({ crops }) => {
+const getTotalProfit = ({ crops }, environmentFactors) => {
+  if (environmentFactors == undefined) { 
   let cost = [];
   let revenue = [];
   for (let i of crops) {
@@ -67,7 +68,25 @@ const getTotalProfit = ({ crops }) => {
   const totalCost = cost.reduce((total, arg) => total + arg, 0);
   const totalRevenue = revenue.reduce((total, arg) => total + arg, 0);
   return totalRevenue - totalCost;
-};
+}
+else {
+  let cost = [];
+  let revenue = [];
+  let sunValue = environmentFactors.sun;
+  let windValue = environmentFactors.wind;
+  let soilValue = environmentFactors.soil;
+  for (let i of crops) {
+    let sunAmount = i.crop.factor.sun[sunValue];
+    let windAmount = i.crop.factor.wind[windValue];
+    let soilAmount = i.crop.factor.wind[soilValue];
+    cost.push(i.numCrops * i.crop.cost);
+    revenue.push(i.crop.yield * sunAmount * windAmount * soilAmount * i.crop.price);
+}
+
+const totalCost = cost.reduce((total, arg) => total + arg, 0);
+const totalRevenue = revenue.reduce((total, arg) => total + arg, 0);
+return totalRevenue - totalCost;
+}};
 
 module.exports = {
   getYieldForPlant,
