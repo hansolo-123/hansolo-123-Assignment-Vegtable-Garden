@@ -53,8 +53,8 @@ const getRevenueForCrop = (corn, environmentFactors) => {
   return getYieldForPlant(corn, environmentFactors) * corn.price;
 };
 
-const getProfitForCrop = (amount, corn) => {
-  return getRevenueForCrop(corn) - getCostsForCrop(amount);
+const getProfitForCrop = (amount, corn, environmentFactors) => {
+  return getRevenueForCrop(corn, environmentFactors) - getCostsForCrop(amount);
 };
 
 const getTotalProfit = ({ crops }) => {
