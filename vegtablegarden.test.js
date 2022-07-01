@@ -15,12 +15,12 @@ describe("getYieldForPlant", () => {
     factor: {
       sun: {
         low: 0.5,
-        medium: 0,
+        medium: 1,
         high: 1.5,
       },
       wind: {
         low: 0.5,
-        medium: 0,
+        medium: 1,
         high: 0.6,
       },
       soil: {
@@ -66,17 +66,17 @@ describe("getYieldForCrop", () => {
       factor: {
         sun: {
           low: 0.5,
-          medium: 0,
+          medium: 1,
           high: 1.5,
         },
         wind: {
           low: 0.5,
-          medium: 0,
+          medium: 1,
           high: 0.6,
         },
         soil: {
           low: 0.5,
-          medium: 0,
+          medium: 1,
           high: 1.5,
         },
       },
@@ -100,6 +100,23 @@ describe("getTotalYield", () => {
     const corn = {
       name: "corn",
       yield: 3,
+      factor: {
+        sun: {
+          low: 0.5,
+          medium: 1,
+          high: 1.5,
+        },
+        wind: {
+          low: 0.5,
+          medium: 1,
+          high: 0.6,
+        },
+        soil: {
+          low: 0.5,
+          medium: 1,
+          high: 1.5,
+        },
+      },
     };
     const pumpkin = {
       name: "pumpkin",
@@ -110,6 +127,62 @@ describe("getTotalYield", () => {
       { crop: pumpkin, numCrops: 2 },
     ];
     expect(getTotalYield({ crops })).toBe(23);
+  });
+
+  test("Calculate total yield with environment factors", () => {
+    const corn = {
+      name: "corn",
+      yield: 3,
+      factor: {
+        sun: {
+          low: 0.5,
+          medium: 1,
+          high: 1.5,
+        },
+        wind: {
+          low: 0.5,
+          medium: 1,
+          high: 0.6,
+        },
+        soil: {
+          low: 0.5,
+          medium: 1,
+          high: 1.5,
+        },
+      },
+    };
+    const pumpkin = {
+      name: "pumpkin",
+      yield: 4,
+      factor: {
+        sun: {
+          low: 0.5,
+          medium: 1,
+          high: 1.5,
+        },
+        wind: {
+          low: 1,
+          medium: 1,
+          high: 1,
+        },
+        soil: {
+          low: 0.5,
+          medium: 1.2,
+          high: 1.5,
+        },
+      },
+    };
+    const crops = [
+      { crop: corn, numCrops: 5 },
+      { crop: pumpkin, numCrops: 2 },
+    ];
+    const environmentFactors = {
+      sun: "low",
+      wind: "high",
+      soil: "medium",
+    };
+
+    expect(getTotalYield({ crops }, environmentFactors)).toBe(8.5);
   });
 
   test("Calculate total yield with 0 amount", () => {
